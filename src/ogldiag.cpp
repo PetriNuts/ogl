@@ -105,38 +105,60 @@ void wxDiagram::AddShape(wxShape *object, wxShape *addAfter)
 {
 	wxObjectList::compatibility_iterator nodeAfter = NULL;
   if (addAfter)
-    nodeAfter = m_shapeList->Find(addAfter);
+  {
+	  if(addAfter->GetShapeListIterator())
+		  nodeAfter = addAfter->GetShapeListIterator();
+	  else
+    	  nodeAfter = m_shapeList->Find(addAfter);
+  }
 
   if (!m_shapeList->Member(object))
   {
+    wxObjectList::compatibility_iterator pos = NULL;
     if (nodeAfter)
     {
       if (nodeAfter->GetNext())
-        m_shapeList->Insert(nodeAfter->GetNext(), object);
+        pos = m_shapeList->Insert(nodeAfter->GetNext(), object);
       else
-        m_shapeList->Append(object);
+        pos = m_shapeList->Append(object);
     }
     else
-      m_shapeList->Append(object);
+    {
+      pos = m_shapeList->Append(object);
+    }
     object->SetCanvas(GetCanvas());
+    object->SetShapeListIterator(pos);
   }
 }
 
 void wxDiagram::InsertShape(wxShape *object)
 {
-  m_shapeList->Insert(object);
+  auto pos = m_shapeList->Insert(object);
   object->SetCanvas(GetCanvas());
+  object->SetShapeListIterator(pos);
 }
 
 void wxDiagram::RemoveShape(wxShape *object)
 {
-  m_shapeList->DeleteObject(object);
+  if(object->GetShapeListIterator())
+    m_shapeList->DeleteNode(object->GetShapeListIterator());
+  else
+    m_shapeList->DeleteObject(object);
+
+  object->SetShapeListIterator(NULL);
 }
 
 // Should this delete the actual objects too? I think not.
 void wxDiagram::RemoveAllShapes()
 {
-  m_shapeList->Clear();
+  wxNode *node = m_shapeList->GetFirst();
+  while (node)
+  {
+    //order is significant
+    wxShape *shape = (wxShape *)node->GetData();
+    node = node->GetNext();
+    RemoveShape(shape);
+  }
 }
 
 void wxDiagram::DeleteAllShapes()

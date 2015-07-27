@@ -267,6 +267,7 @@ wxShape::wxShape(wxShapeCanvas *can)
   m_id = 0;
   m_formatted = false;
   m_canvas = can;
+  m_shapeListIterator = NULL;
   m_xpos = 0.0; m_ypos = 0.0;
   m_pen = g_oglBlackPen;
   m_brush = wxWHITE_BRUSH;
@@ -284,6 +285,7 @@ wxShape::wxShape(wxShapeCanvas *can)
   m_sensitivity = OP_ALL;
   m_draggable = true;
   m_parent = NULL;
+  m_parentIterator = NULL;
   m_formatMode = FORMAT_CENTRE_HORIZ | FORMAT_CENTRE_VERT;
   m_shadowMode = SHADOW_NONE;
   m_shadowOffsetX = 6;
@@ -314,7 +316,9 @@ wxShape::wxShape(wxShapeCanvas *can)
 wxShape::~wxShape()
 {
   if (m_parent)
-    m_parent->GetChildren().DeleteObject(this);
+  {
+	  m_parent->GetChildren().DeleteNode(m_parentIterator);
+  }
 
   ClearText();
   ClearRegions();
@@ -410,6 +414,11 @@ void wxShape::SetShadowMode(int mode, bool redraw)
   {
     m_shadowMode = mode;
   }
+}
+
+void wxShape::SetShapeListIterator(wxList::compatibility_iterator it)
+{
+	m_shapeListIterator = it;
 }
 
 void wxShape::SetCanvas(wxShapeCanvas *theCanvas)
@@ -2502,7 +2511,6 @@ void wxShape::DeleteControlPoints(wxDC *dc)
     wxControlPoint *control = (wxControlPoint *)node->GetData();
     if (dc)
         control->GetEventHandler()->OnErase(*dc);
-    m_canvas->RemoveShape(control);
     delete control;
     delete node;
     node = m_controlPoints.GetFirst();

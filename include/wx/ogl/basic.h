@@ -210,6 +210,9 @@ class WXDLLIMPEXP_OGL wxShape: public wxShapeEvtHandler
   virtual void AddToCanvas(wxShapeCanvas *the_canvas, wxShape *addAfter = NULL);
   virtual void InsertInCanvas(wxShapeCanvas *the_canvas);
 
+  void SetShapeListIterator(wxList::compatibility_iterator it);
+  inline wxList::compatibility_iterator GetShapeListIterator() { return m_shapeListIterator; }
+
   virtual void RemoveFromCanvas(wxShapeCanvas *the_canvas);
   inline double GetX() const { return m_xpos; }
   inline double GetY() const { return m_ypos; }
@@ -217,7 +220,7 @@ class WXDLLIMPEXP_OGL wxShape: public wxShapeEvtHandler
   inline void SetY(double y) { m_ypos = y; }
 
   inline wxShape *GetParent() const { return m_parent; }
-  inline void SetParent(wxShape *p) { m_parent = p; }
+  inline void SetParent(wxShape *p, wxList::compatibility_iterator it) { m_parent = p; m_parentIterator = it;}
   wxShape *GetTopAncestor();
   inline wxList& GetChildren() { return m_children; }
 
@@ -533,6 +536,7 @@ class WXDLLIMPEXP_OGL wxShape: public wxShapeEvtHandler
   wxColour              m_textColour;
   wxString              m_textColourName;
   wxShapeCanvas*        m_canvas;
+  wxList::compatibility_iterator m_shapeListIterator; // iterator in shape list, used for fast delete
   wxList                m_lines;
   wxList                m_text;
   wxList                m_controlPoints;
@@ -556,6 +560,7 @@ class WXDLLIMPEXP_OGL wxShape: public wxShapeEvtHandler
   bool                  m_drawHandles;     // Don't draw handles if false, usually true
   wxList                m_children;      // In case it's composite
   wxShape*              m_parent;      // In case it's a child
+  wxList::compatibility_iterator m_parentIterator; // iterator in parents children list, used for fast delete
   int                   m_formatMode;
   int                   m_shadowMode;
   const wxBrush*        m_shadowBrush;

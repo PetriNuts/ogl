@@ -290,8 +290,8 @@ void wxCompositeShape::SetSize(double w, double h, bool recursive)
 
 void wxCompositeShape::AddChild(wxShape *child, wxShape *addAfter)
 {
-  m_children.Append(child);
-  child->SetParent(this);
+  auto it = m_children.Append(child);
+  child->SetParent(this, it);
   if (m_canvas)
   {
     // Ensure we add at the right position
@@ -306,7 +306,7 @@ void wxCompositeShape::RemoveChild(wxShape *child)
   m_children.DeleteObject(child);
   m_divisions.DeleteObject(child);
   RemoveChildFromConstraints(child);
-  child->SetParent(NULL);
+  child->SetParent(NULL, NULL);
 }
 
 void wxCompositeShape::DeleteConstraintsInvolvingChild(wxShape *child)
@@ -371,8 +371,8 @@ void wxCompositeShape::Copy(wxShape& copy)
     if (newObject->GetId() == 0)
       newObject->SetId(wxNewId());
 
-    newObject->SetParent(&compositeCopy);
-    compositeCopy.m_children.Append(newObject);
+    auto it = compositeCopy.m_children.Append(newObject);
+    newObject->SetParent(&compositeCopy, it);
 
     // Some m_children may be divisions
     if (m_divisions.Member(object))
