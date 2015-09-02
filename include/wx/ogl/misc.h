@@ -30,7 +30,7 @@ WXDLLIMPEXP_OGL void oglCentreText(wxDC& dc, wxList *text, double m_xpos, double
 
 // Given a string, returns a list of strings that fit within the given
 // width of box. Height is ignored.
-WXDLLIMPEXP_OGL wxStringList* oglFormatText(wxDC& dc, const wxString& text, double width, double height, int formatMode = 0);
+WXDLLIMPEXP_OGL wxArrayString* oglFormatText(wxDC& dc, const wxString& text, double width, double height, int formatMode = 0);
 
 // Centres the list of wxShapeTextLine strings, doesn't clip.
 // Doesn't actually draw into the DC.

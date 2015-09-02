@@ -608,20 +608,18 @@ void wxShape::FormatText(wxDC& dc, const wxString& s, int i)
 
   region->GetSize(&w, &h);
 
-  wxStringList *stringList = oglFormatText(dc, s, (w-2*m_textMarginX), (h-2*m_textMarginY), region->GetFormatMode());
-  node = (wxNode*)stringList->GetFirst();
-  while (node)
+  wxArrayString *stringList = oglFormatText(dc, s, (w-2*m_textMarginX), (h-2*m_textMarginY), region->GetFormatMode());
+  for(size_t i = 0; i < stringList->GetCount(); ++i)
   {
-    wxChar *s = (wxChar *)node->GetData();
-    wxShapeTextLine *line = new wxShapeTextLine(0.0, 0.0, s);
-    region->GetFormattedText().Append((wxObject *)line);
-    node = node->GetNext();
+	  const wxString& s = (*stringList)[i];
+	  wxShapeTextLine *line = new wxShapeTextLine(0.0, 0.0, s);
+	  region->GetFormattedText().Append((wxObject *)line);
   }
   delete stringList;
   double actualW = w;
   double actualH = h;
   // Don't try to resize an object with more than one image (this case should be dealt
-  // with by overriden handlers)
+  // with by overridden handlers)
   if ((region->GetFormatMode() & FORMAT_SIZE_TO_CONTENTS) &&
       (region->GetFormattedText().GetCount() > 0) &&
       (m_regions.GetCount() == 1) && !GraphicsInSizeToContents)

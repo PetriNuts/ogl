@@ -209,9 +209,9 @@ void oglCentreText(wxDC& dc, wxList *text_list,
 
   // First, get maximum dimensions of box enclosing text
 
-  long char_height = 0;
-  long max_width = 0;
-  long current_width = 0;
+  wxCoord char_height = 0;
+  wxCoord max_width = 0;
+  wxCoord current_width = 0;
 
   // Store text extents for speed
   double *widths = new double[n];
@@ -292,9 +292,9 @@ void oglCentreTextNoClipping(wxDC& dc, wxList *text_list,
 
   // First, get maximum dimensions of box enclosing text
 
-  long char_height = 0;
-  long max_width = 0;
-  long current_width = 0;
+  wxCoord char_height = 0;
+  wxCoord max_width = 0;
+  wxCoord current_width = 0;
 
   // Store text extents for speed
   double *widths = new double[n];
@@ -351,9 +351,9 @@ void oglGetCentredTextExtent(wxDC& dc, wxList *text_list,
 
   // First, get maximum dimensions of box enclosing text
 
-  long char_height = 0;
-  long max_width = 0;
-  long current_width = 0;
+  wxCoord char_height = 0;
+  wxCoord max_width = 0;
+  wxCoord current_width = 0;
 
   wxObjectList::compatibility_iterator current = text_list->GetFirst();
   while (current)
@@ -372,14 +372,14 @@ void oglGetCentredTextExtent(wxDC& dc, wxList *text_list,
 
 // Format a string to a list of strings that fit in the given box.
 // Interpret %n and 10 or 13 as a new line.
-wxStringList *oglFormatText(wxDC& dc, const wxString& text, double width, double WXUNUSED(height), int formatMode)
+wxArrayString *oglFormatText(wxDC& dc, const wxString& text, double width, double WXUNUSED(height), int formatMode)
 {
   // First, parse the string into a list of words
-  wxStringList word_list;
+	wxArrayString word_list;
 
   // Make new lines into NULL strings at this point
   int i = 0; int j = 0; int len = text.Length();
-  wxChar word[400]; word[0] = 0;
+  wxString word;
   bool end_word = false; bool new_line = false;
   while (i < len)
   {
@@ -391,15 +391,15 @@ wxStringList *oglFormatText(wxDC& dc, const wxString& text, double width, double
     {
       case wxT('%'):
       {
-        i ++;
+        i++;
         if (i == len)
-        { word[j] = wxT('%'); j ++; }
+        { word += wxT('%'); }
         else
         {
           if (text[i] == wxT('n'))
           { new_line = true; end_word = true; i++; }
           else
-          { word[j] = wxT('%'); j ++; word[j] = text[i]; j ++; i ++; }
+          { word += wxT('%'); word += text[i]; i++; }
         }
         break;
       }
@@ -419,42 +419,40 @@ wxStringList *oglFormatText(wxDC& dc, const wxString& text, double width, double
       }
       default:
       {
-        word[j] = text[i];
-        j ++; i ++;
+        word += text[i];
+        i++;
         break;
       }
     }
     if (i == len) end_word = true;
     if (end_word)
     {
-      word[j] = 0;
-      j = 0;
       word_list.Add(word);
+      word.Empty();
       end_word = false;
     }
     if (new_line)
     {
-      word_list.Append(NULL);
+      word_list.Add(wxEmptyString);
       new_line = false;
     }
   }
   // Now, make a list of strings which can fit in the box
-  wxStringList *string_list = new wxStringList;
+  wxArrayString *string_list = new wxArrayString;
 
   wxString buffer;
-  wxStringList::compatibility_iterator node = word_list.GetFirst();
-  long x, y;
+  wxCoord x, y;
 
-  while (node)
+  for (size_t k = 0; k < word_list.GetCount(); ++k)
   {
     wxString oldBuffer(buffer);
 
-    wxString s = node->GetData();
+    const wxString& s = word_list[k];
     if (s.empty())
     {
       // FORCE NEW LINE
       if (buffer.Length() > 0)
-        string_list->Add(buffer.c_str());
+        string_list->Add(buffer);
 
       buffer.Empty();
     }
@@ -468,17 +466,15 @@ wxStringList *oglFormatText(wxDC& dc, const wxString& text, double width, double
       {
         // Deal with first word being wider than box
         if (oldBuffer.Length() > 0)
-          string_list->Add(oldBuffer.c_str());
+          string_list->Add(oldBuffer);
 
         buffer.Empty();
         buffer += s;
       }
     }
-
-    node = node->GetNext();
   }
   if (buffer.Length() != 0)
-    string_list->Add(buffer.c_str());
+    string_list->Add(buffer);
 
   return string_list;
 }

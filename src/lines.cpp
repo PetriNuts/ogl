@@ -214,16 +214,14 @@ void wxLineShape::FormatText(wxDC& dc, const wxString& s, int i)
     region->SetSize(w, h);
   }
 
-  wxStringList *string_list = oglFormatText(dc, s, (w-5), (h-5), region->GetFormatMode());
-  node = (wxNode*)string_list->GetFirst();
-  while (node)
+  wxArrayString *stringList = oglFormatText(dc, s, (w-5), (h-5), region->GetFormatMode());
+  for(size_t i = 0; i < stringList->GetCount(); ++i)
   {
-    wxChar *s = (wxChar *)node->GetData();
-    wxShapeTextLine *line = new wxShapeTextLine(0.0, 0.0, s);
-    region->GetFormattedText().Append((wxObject *)line);
-    node = node->GetNext();
+	  const wxString& s = (*stringList)[i];
+	  wxShapeTextLine *line = new wxShapeTextLine(0.0, 0.0, s);
+	  region->GetFormattedText().Append((wxObject *)line);
   }
-  delete string_list;
+  delete stringList;
   double actualW = w;
   double actualH = h;
   if (region->GetFormatMode() & FORMAT_SIZE_TO_CONTENTS)
