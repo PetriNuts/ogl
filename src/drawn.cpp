@@ -402,7 +402,7 @@ void wxDrawnShape::SetDrawnBackgroundMode(int mode)
  *
  */
 
-wxOpSetGDI::wxOpSetGDI(int theOp, wxPseudoMetaFile *theImage, int theGdiIndex, int theMode):
+wxOpSetGDI::wxOpSetGDI(int theOp, wxPseudoMetaFile *theImage, intptr_t theGdiIndex, int theMode):
   wxDrawOp(theOp)
 {
   m_gdiIndex = theGdiIndex;
@@ -444,7 +444,7 @@ void wxOpSetGDI::Do(wxDC& dc, double WXUNUSED(xoffset), double WXUNUSED(yoffset)
         // Need to construct a brush to match the outline pen's colour
         if (m_image->m_outlinePen)
         {
-          wxBrush *br = wxTheBrushList->FindOrCreateBrush(m_image->m_outlinePen->GetColour(), wxSOLID);
+          wxBrush *br = wxTheBrushList->FindOrCreateBrush(m_image->m_outlinePen->GetColour(), wxBRUSHSTYLE_SOLID);
           if (br)
             dc.SetBrush(* br);
         }
@@ -2420,7 +2420,7 @@ void wxPseudoMetaFile::DestroyClippingRect()
 void wxPseudoMetaFile::SetPen(const wxPen* pen, bool isOutline)
 {
     m_gdiObjects.Append(wx_const_cast(wxPen*, pen));
-    int n = m_gdiObjects.GetCount();
+    intptr_t n = m_gdiObjects.GetCount();
 
     wxOpSetGDI* theOp = new wxOpSetGDI(DRAWOP_SET_PEN, this, n - 1);
 
@@ -2435,7 +2435,7 @@ void wxPseudoMetaFile::SetPen(const wxPen* pen, bool isOutline)
 void wxPseudoMetaFile::SetBrush(const wxBrush* brush, bool isFill)
 {
     m_gdiObjects.Append(wx_const_cast(wxBrush*, brush));
-    int n = m_gdiObjects.GetCount();
+    intptr_t n = m_gdiObjects.GetCount();
 
     wxOpSetGDI* theOp = new wxOpSetGDI(DRAWOP_SET_BRUSH, this, n - 1);
 

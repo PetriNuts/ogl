@@ -958,7 +958,7 @@ void wxLineShape::OnDrawOutline(wxDC& dc, double WXUNUSED(x), double WXUNUSED(y)
   const wxPen *old_pen = m_pen;
   const wxBrush *old_brush = m_brush;
 
-  wxPen dottedPen(*wxBLACK, 1, wxDOT);
+  wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
   SetPen(& dottedPen);
   SetBrush( wxTRANSPARENT_BRUSH );
 
@@ -1191,10 +1191,10 @@ void wxLineShape::OnDraw(wxDC& dc)
     // Problem with pen - if not a solid pen, does strange things
     // to the arrowhead. So make (get) a new pen that's solid.
     const wxPen *old_pen = NULL;
-    if (m_pen && (m_pen->GetStyle() != wxSOLID))
+    if (m_pen && (m_pen->GetStyle() != wxPENSTYLE_SOLID))
     {
       const wxPen *solid_pen =
-        wxThePenList->FindOrCreatePen(m_pen->GetColour(), m_pen->GetWidth(), wxSOLID);
+        wxThePenList->FindOrCreatePen(m_pen->GetColour(), m_pen->GetWidth(), wxPENSTYLE_SOLID);
       if (solid_pen)
       {
     	old_pen = m_pen;
@@ -1729,7 +1729,7 @@ void wxLineShape::OnSizingDragLeft(wxControlPoint* pt, bool WXUNUSED(draw), doub
 
   dc.SetLogicalFunction(OGLRBLF);
 
-  wxPen dottedPen(*wxBLACK, 1, wxDOT);
+  wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
   dc.SetPen(dottedPen);
   dc.SetBrush((* wxTRANSPARENT_BRUSH));
 
@@ -1745,7 +1745,7 @@ void wxLineShape::OnSizingDragLeft(wxControlPoint* pt, bool WXUNUSED(draw), doub
     const wxPen *old_pen = lineShape->GetPen();
     const wxBrush *old_brush = lineShape->GetBrush();
 
-    wxPen dottedPen(*wxBLACK, 1, wxDOT);
+    wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
     lineShape->SetPen(& dottedPen);
     lineShape->SetBrush(wxTRANSPARENT_BRUSH);
 
@@ -1793,7 +1793,7 @@ void wxLineShape::OnSizingBeginDragLeft(wxControlPoint* pt, double x, double y, 
     const wxPen *old_pen = lineShape->GetPen();
     const wxBrush *old_brush = lineShape->GetBrush();
 
-    wxPen dottedPen(*wxBLACK, 1, wxDOT);
+    wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
     lineShape->SetPen(& dottedPen);
     lineShape->SetBrush(wxTRANSPARENT_BRUSH);
 
@@ -2403,7 +2403,7 @@ wxLabelShape::wxLabelShape(wxLineShape *parent, wxShapeRegion *region, double w,
 {
   m_lineShape = parent;
   m_shapeRegion = region;
-  SetPen(wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxDOT));
+  SetPen(wxThePenList->FindOrCreatePen(*wxBLACK, 1, wxPENSTYLE_DOT));
 }
 
 wxLabelShape::~wxLabelShape()

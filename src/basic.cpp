@@ -1315,7 +1315,7 @@ void wxShape::OnDragLeft(bool draw, double x, double y, int keys, int attachment
 
   dc.SetLogicalFunction(OGLRBLF);
 
-  wxPen dottedPen(*wxBLACK, 1, wxDOT);
+  wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
   dc.SetPen(dottedPen);
   dc.SetBrush(* wxTRANSPARENT_BRUSH);
 
@@ -1360,7 +1360,7 @@ void wxShape::OnBeginDragLeft(double x, double y, int keys, int attachment)
 //  m_xpos = xx; m_ypos = yy;
   dc.SetLogicalFunction(OGLRBLF);
 
-  wxPen dottedPen(*wxBLACK, 1, wxDOT);
+  wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
   dc.SetPen(dottedPen);
   dc.SetBrush((* wxTRANSPARENT_BRUSH));
 
@@ -3274,7 +3274,7 @@ wxPen wxShape::GetBackgroundPen()
     if (GetCanvas())
     {
         wxColour c = GetCanvas()->GetBackgroundColour();
-        return wxPen(c, 1, wxSOLID);
+        return wxPen(c, 1, wxPENSTYLE_SOLID);
     }
     return * g_oglWhiteBackgroundPen;
 }
@@ -3285,7 +3285,7 @@ wxBrush wxShape::GetBackgroundBrush()
     if (GetCanvas())
     {
         wxColour c = GetCanvas()->GetBackgroundColour();
-        return wxBrush(c, wxSOLID);
+        return wxBrush(c, wxBRUSHSTYLE_SOLID);
     }
     return * g_oglWhiteBackgroundBrush;
 }

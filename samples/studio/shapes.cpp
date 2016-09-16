@@ -189,7 +189,7 @@ void csEvtHandler::OnBeginDragRight(double x, double y, int WXUNUSED(keys), int 
   wxClientDC dc(GetShape()->GetCanvas());
   GetShape()->GetCanvas()->PrepareDC(dc);
 
-  wxPen dottedPen(*wxBLACK, 1, wxDOT);
+  wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
   dc.SetLogicalFunction(OGLRBLF);
   dc.SetPen(dottedPen);
   double xp, yp;
@@ -203,7 +203,7 @@ void csEvtHandler::OnDragRight(bool WXUNUSED(draw), double x, double y, int WXUN
   wxClientDC dc(GetShape()->GetCanvas());
   GetShape()->GetCanvas()->PrepareDC(dc);
 
-  wxPen dottedPen(*wxBLACK, 1, wxDOT);
+  wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
   dc.SetLogicalFunction(OGLRBLF);
   dc.SetPen(dottedPen);
   double xp, yp;
@@ -275,7 +275,7 @@ void csEvtHandler::OnDragLeft(bool draw, double x, double y, int keys, int attac
 
   dc.SetLogicalFunction(OGLRBLF);
 
-  wxPen dottedPen(*wxBLACK, 1, wxDOT);
+  wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
   dc.SetPen(dottedPen);
   dc.SetBrush(* wxTRANSPARENT_BRUSH);
 
@@ -344,7 +344,7 @@ void csEvtHandler::OnBeginDragLeft(double x, double y, int keys, int attachment)
 
   dc.SetLogicalFunction(OGLRBLF);
 
-  wxPen dottedPen(*wxBLACK, 1, wxDOT);
+  wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
   dc.SetPen(dottedPen);
   dc.SetBrush((* wxTRANSPARENT_BRUSH));
 
@@ -982,7 +982,7 @@ IMPLEMENT_DYNAMIC_CLASS(csGroupShape, wxRectangleShape)
 
 csGroupShape::csGroupShape()
 {
-    SetPen(wxThePenList->FindOrCreatePen(_T("BLACK"), 1, wxDOT));
+    SetPen(wxThePenList->FindOrCreatePen(_T("BLACK"), 1, wxPENSTYLE_DOT));
     SetBrush(wxTRANSPARENT_BRUSH);
 
     SetSize(csSTANDARD_SHAPE_WIDTH, csSTANDARD_SHAPE_WIDTH);

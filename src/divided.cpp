@@ -481,10 +481,10 @@ void wxDividedShape::EditRegions()
       case wxLONG_DASH:
         styleString = "Long Dash";
         break;
-      case wxDOT:
+      case wxPENSTYLE_DOT:
         styleString = "Dot";
         break;
-      case wxDOT_DASH:
+      case wxPENSTYLE_DOT_DASH:
         styleString = "Dot Dash";
         break;
       case wxSOLID:
@@ -533,13 +533,13 @@ void wxDividedShape::EditRegions()
       if (strcmp(styleStrings[i], "Solid") == 0)
         region->penStyle = wxSOLID;
       else if (strcmp(styleStrings[i], "Dot") == 0)
-        region->penStyle = wxDOT;
+        region->penStyle = wxPENSTYLE_DOT;
       else if (strcmp(styleStrings[i], "Short Dash") == 0)
         region->penStyle = wxSHORT_DASH;
       else if (strcmp(styleStrings[i], "Long Dash") == 0)
         region->penStyle = wxLONG_DASH;
       else if (strcmp(styleStrings[i], "Dot Dash") == 0)
-        region->penStyle = wxDOT_DASH;
+        region->penStyle = wxPENSTYLE_DOT_DASH;
       delete[] styleStrings[i];
     }
     region->m_actualPenObject = NULL;
@@ -581,7 +581,7 @@ void wxDividedShapeControlPoint::OnDragLeft(bool WXUNUSED(draw), double WXUNUSED
     GetCanvas()->PrepareDC(dc);
 
     dc.SetLogicalFunction(OGLRBLF);
-    wxPen dottedPen(*wxBLACK, 1, wxDOT);
+    wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
     dc.SetPen(dottedPen);
     dc.SetBrush((* wxTRANSPARENT_BRUSH));
 
@@ -600,7 +600,7 @@ void wxDividedShapeControlPoint::OnBeginDragLeft(double WXUNUSED(x), double y, i
 
     wxDividedShape *dividedObject = (wxDividedShape *)m_shape;
     dc.SetLogicalFunction(OGLRBLF);
-    wxPen dottedPen(*wxBLACK, 1, wxDOT);
+    wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
     dc.SetPen(dottedPen);
     dc.SetBrush((* wxTRANSPARENT_BRUSH));
 

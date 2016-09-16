@@ -91,7 +91,7 @@ protected:
 class WXDLLIMPEXP_OGL wxOpSetGDI: public wxDrawOp
 {
  public:
-  wxOpSetGDI(int theOp, wxPseudoMetaFile *theImage, int theGdiIndex, int theMode = 0);
+  wxOpSetGDI(int theOp, wxPseudoMetaFile *theImage, intptr_t theGdiIndex, int theMode = 0);
   void Do(wxDC& dc, double xoffset, double yoffset);
   wxDrawOp *Copy(wxPseudoMetaFile *newImage);
 #if wxUSE_PROLOGIO
@@ -101,7 +101,7 @@ class WXDLLIMPEXP_OGL wxOpSetGDI: public wxDrawOp
 
 public:
   int               m_mode;
-  int               m_gdiIndex;
+  intptr_t          m_gdiIndex;
   wxPseudoMetaFile* m_image;
   unsigned char     m_r;
   unsigned char     m_g;
