@@ -364,14 +364,14 @@ class WXDLLIMPEXP_OGL wxMetaRecord: public wxObject
 {
   public:
   int metaFunction;
-  long param1;
-  long param2;
-  long param3;
-  long param4;
-  long param5;
-  long param6;
-  long param7;
-  long param8;
+  intptr_t param1;
+  intptr_t param2;
+  intptr_t param3;
+  intptr_t param4;
+  intptr_t param5;
+  intptr_t param6;
+  intptr_t param7;
+  intptr_t param8;
   wxChar *stringParam;
   wxRealPoint *points;
 

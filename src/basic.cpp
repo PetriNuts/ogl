@@ -609,10 +609,10 @@ void wxShape::FormatText(wxDC& dc, const wxString& s, int i)
   region->GetSize(&w, &h);
 
   wxArrayString *stringList = oglFormatText(dc, s, (w-2*m_textMarginX), (h-2*m_textMarginY), region->GetFormatMode());
-  for(size_t i = 0; i < stringList->GetCount(); ++i)
+  for(size_t j = 0; j < stringList->GetCount(); ++j)
   {
-	  const wxString& s = (*stringList)[i];
-	  wxShapeTextLine *line = new wxShapeTextLine(0.0, 0.0, s);
+	  const wxString& str = (*stringList)[j];
+	  wxShapeTextLine *line = new wxShapeTextLine(0.0, 0.0, str);
 	  region->GetFormattedText().Append((wxObject *)line);
   }
   delete stringList;

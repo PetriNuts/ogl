@@ -158,9 +158,9 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
   if (!handle) return false;
 
   // Read placeable metafile header, if any
-  long key = getint(handle);
+  intptr_t key = getint(handle);
 
-  if (key == (long) 0x9AC6CDD7)
+  if (key == (intptr_t) 0x9AC6CDD7)
   {
     /* long hmf = */ getshort(handle);
     int iLeft, iTop, iRight, iBottom;
@@ -417,7 +417,7 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
       case META_POLYLINE:
       {
         wxMetaRecord *rec = new wxMetaRecord(META_POLYLINE);
-        rec->param1 = (long)getshort(handle);
+        rec->param1 = (intptr_t)getshort(handle);
         rec->points = new wxRealPoint[(int)rec->param1];
         for (int i = 0; i < rec->param1; i++)
         {
@@ -438,7 +438,7 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
       case META_SELECTOBJECT:
       {
         wxMetaRecord *rec = new wxMetaRecord(META_SELECTOBJECT);
-        rec->param1 = (long)getshort(handle); // Position of object in gdiObjects list
+        rec->param1 = (intptr_t)getshort(handle); // Position of object in gdiObjects list
         metaRecords.Append(rec);
         // param2 gives the index into gdiObjects, which is different from
         // the index into the handle table.
@@ -467,7 +467,7 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
         metaRecords.Append(rec);
         gdiObjects.Append(rec);
         AddMetaRecordHandle(rec);
-        rec->param2 = (long)(gdiObjects.GetCount() - 1);
+        rec->param2 = (intptr_t)(gdiObjects.GetCount() - 1);
         break;
       }
 //      case META_STRETCHDIB:
@@ -492,7 +492,7 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
         metaRecords.Append(rec);
         gdiObjects.Append(rec);
         AddMetaRecordHandle(rec);
-        rec->param2 = (long)(gdiObjects.GetCount() - 1);
+        rec->param2 = (intptr_t)(gdiObjects.GetCount() - 1);
         break;
       }
       case META_CREATEBRUSH:
@@ -502,7 +502,7 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
         metaRecords.Append(rec);
         gdiObjects.Append(rec);
         AddMetaRecordHandle(rec);
-        rec->param2 = (long)(gdiObjects.GetCount() - 1);
+        rec->param2 = (intptr_t)(gdiObjects.GetCount() - 1);
         break;
       }
       case META_CREATEPATTERNBRUSH:
@@ -512,7 +512,7 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
         metaRecords.Append(rec);
         gdiObjects.Append(rec);
         AddMetaRecordHandle(rec);
-        rec->param2 = (long)(gdiObjects.GetCount() - 1);
+        rec->param2 = (intptr_t)(gdiObjects.GetCount() - 1);
         break;
       }
       case META_CREATEPENINDIRECT:
@@ -533,12 +533,12 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
         else style = wxPENSTYLE_SOLID;
 
         wxColour colour(GetRValue(colorref), GetGValue(colorref), GetBValue(colorref));
-        rec->param1 = (long)wxThePenList->FindOrCreatePen(colour, x, style);
+        rec->param1 = (intptr_t)wxThePenList->FindOrCreatePen(colour, x, style);
         metaRecords.Append(rec);
         gdiObjects.Append(rec);
 
         AddMetaRecordHandle(rec);
-        rec->param2 = (long)(gdiObjects.GetCount() - 1);
+        rec->param2 = (intptr_t)(gdiObjects.GetCount() - 1);
 
         // For some reason, the size of this record is sometimes 9 words!!!
         // instead of the usual 8. So read 2 characters extra.
@@ -606,11 +606,11 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
         wxFont *theFont =
           wxTheFontList->FindOrCreateFont(pointSize, family, style, weight, (lfUnderline != 0));
 
-        rec->param1 = (long) theFont;
+        rec->param1 = (intptr_t) theFont;
         metaRecords.Append(rec);
         gdiObjects.Append(rec);
         AddMetaRecordHandle(rec);
-        rec->param2 = (long)(gdiObjects.GetCount() - 1);
+        rec->param2 = (intptr_t)(gdiObjects.GetCount() - 1);
         break;
       }
       case META_CREATEBRUSHINDIRECT:
@@ -671,11 +671,11 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
         }
 
         wxColour colour(GetRValue(colorref), GetGValue(colorref), GetBValue(colorref));
-        rec->param1 = (long)wxTheBrushList->FindOrCreateBrush(colour, style);
+        rec->param1 = (intptr_t)wxTheBrushList->FindOrCreateBrush(colour, style);
         metaRecords.Append(rec);
         gdiObjects.Append(rec);
         AddMetaRecordHandle(rec);
-        rec->param2 = (long)(gdiObjects.GetCount() - 1);
+        rec->param2 = (intptr_t)(gdiObjects.GetCount() - 1);
         break;
       }
       case META_CREATEBITMAPINDIRECT:
@@ -686,7 +686,7 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
         metaRecords.Append(rec);
         gdiObjects.Append(rec);
         AddMetaRecordHandle(rec);
-        rec->param2 = (long)(gdiObjects.GetCount() - 1);
+        rec->param2 = (intptr_t)(gdiObjects.GetCount() - 1);
         break;
       }
       case META_CREATEBITMAP:
@@ -697,7 +697,7 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
         metaRecords.Append(rec);
         gdiObjects.Append(rec);
         AddMetaRecordHandle(rec);
-        rec->param2 = (long)(gdiObjects.GetCount() - 1);
+        rec->param2 = (intptr_t)(gdiObjects.GetCount() - 1);
         break;
       }
       case META_CREATEREGION:
@@ -708,7 +708,7 @@ bool wxXMetaFile::ReadFile(const wxChar *file)
         metaRecords.Append(rec);
         gdiObjects.Append(rec);
         AddMetaRecordHandle(rec);
-        rec->param2 = (long)(gdiObjects.GetCount() - 1);
+        rec->param2 = (intptr_t)(gdiObjects.GetCount() - 1);
         break;
       }
       default:

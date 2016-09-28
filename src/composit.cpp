@@ -360,7 +360,7 @@ void wxCompositeShape::Copy(wxShape& copy)
   wxCompositeShape& compositeCopy = (wxCompositeShape&) copy;
 
   // Associate old and new copies for compositeCopying constraints and division geometry
-  oglObjectCopyMapping.Append((long)this, &compositeCopy);
+  oglObjectCopyMapping.Append((intptr_t)this, &compositeCopy);
 
   // Copy the children
   wxNode *node = m_children.GetFirst();
@@ -378,7 +378,7 @@ void wxCompositeShape::Copy(wxShape& copy)
     if (m_divisions.Member(object))
       compositeCopy.m_divisions.Append(newObject);
 
-    oglObjectCopyMapping.Append((long)object, newObject);
+    oglObjectCopyMapping.Append((intptr_t)object, newObject);
 
     node = node->GetNext();
   }
@@ -389,14 +389,14 @@ void wxCompositeShape::Copy(wxShape& copy)
   {
     wxOGLConstraint *constraint = (wxOGLConstraint *)node->GetData();
 
-    wxShape *newConstraining = (wxShape *)(oglObjectCopyMapping.Find((long)constraint->m_constrainingObject)->GetData());
+    wxShape *newConstraining = (wxShape *)(oglObjectCopyMapping.Find((intptr_t)constraint->m_constrainingObject)->GetData());
 
     wxList newConstrainedList;
     wxNode *node2 = constraint->m_constrainedObjects.GetFirst();
     while (node2)
     {
       wxShape *constrainedObject = (wxShape *)node2->GetData();
-      wxShape *newConstrained = (wxShape *)(oglObjectCopyMapping.Find((long)constrainedObject)->GetData());
+      wxShape *newConstrained = (wxShape *)(oglObjectCopyMapping.Find((intptr_t)constrainedObject)->GetData());
       newConstrainedList.Append(newConstrained);
       node2 = node2->GetNext();
     }
@@ -419,19 +419,19 @@ void wxCompositeShape::Copy(wxShape& copy)
   while (node)
   {
     wxDivisionShape *division = (wxDivisionShape *)node->GetData();
-    wxNode *node1 = oglObjectCopyMapping.Find((long)division);
+    wxNode *node1 = oglObjectCopyMapping.Find((intptr_t)division);
     wxNode *leftNode = NULL;
     wxNode *topNode = NULL;
     wxNode *rightNode = NULL;
     wxNode *bottomNode = NULL;
     if (division->GetLeftSide())
-      leftNode = oglObjectCopyMapping.Find((long)division->GetLeftSide());
+      leftNode = oglObjectCopyMapping.Find((intptr_t)division->GetLeftSide());
     if (division->GetTopSide())
-      topNode = oglObjectCopyMapping.Find((long)division->GetTopSide());
+      topNode = oglObjectCopyMapping.Find((intptr_t)division->GetTopSide());
     if (division->GetRightSide())
-      rightNode = oglObjectCopyMapping.Find((long)division->GetRightSide());
+      rightNode = oglObjectCopyMapping.Find((intptr_t)division->GetRightSide());
     if (division->GetBottomSide())
-      bottomNode = oglObjectCopyMapping.Find((long)division->GetBottomSide());
+      bottomNode = oglObjectCopyMapping.Find((intptr_t)division->GetBottomSide());
     if (node1)
     {
       wxDivisionShape *newDivision = (wxDivisionShape *)node1->GetData();

@@ -378,7 +378,7 @@ wxArrayString *oglFormatText(wxDC& dc, const wxString& text, double width, doubl
 	wxArrayString word_list;
 
   // Make new lines into NULL strings at this point
-  int i = 0; int j = 0; int len = text.Length();
+  int i = 0; int len = text.Length();
   wxString word;
   bool end_word = false; bool new_line = false;
   while (i < len)

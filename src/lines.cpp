@@ -215,10 +215,10 @@ void wxLineShape::FormatText(wxDC& dc, const wxString& s, int i)
   }
 
   wxArrayString *stringList = oglFormatText(dc, s, (w-5), (h-5), region->GetFormatMode());
-  for(size_t i = 0; i < stringList->GetCount(); ++i)
+  for(size_t j = 0; j < stringList->GetCount(); ++j)
   {
-	  const wxString& s = (*stringList)[i];
-	  wxShapeTextLine *line = new wxShapeTextLine(0.0, 0.0, s);
+	  const wxString& str = (*stringList)[j];
+	  wxShapeTextLine *line = new wxShapeTextLine(0.0, 0.0, str);
 	  region->GetFormattedText().Append((wxObject *)line);
   }
   delete stringList;
@@ -1122,18 +1122,18 @@ void wxLineShape::FindLineEndPoints(double *fromX, double *fromY, double *toX, d
   }
   else
   {
-    double fromX = m_from->GetX();
-    double fromY = m_from->GetY();
-    double toX = m_to->GetX();
-    double toY = m_to->GetY();
+    double fromX2 = m_from->GetX();
+    double fromY2 = m_from->GetY();
+    double toX2 = m_to->GetX();
+    double toY2 = m_to->GetY();
 
     if (m_from->GetAttachmentMode() != ATTACHMENT_MODE_NONE)
     {
       int nth, no_arcs;
       FindNth(m_from, &nth, &no_arcs, false);
       m_from->GetAttachmentPosition(m_attachmentFrom, &end_x, &end_y, nth, no_arcs, this);
-      fromX = end_x;
-      fromY = end_y;
+      fromX2 = end_x;
+      fromY2 = end_y;
     }
 
     if (m_to->GetAttachmentMode() != ATTACHMENT_MODE_NONE)
@@ -1141,18 +1141,18 @@ void wxLineShape::FindLineEndPoints(double *fromX, double *fromY, double *toX, d
       int nth, no_arcs;
       FindNth(m_to, &nth, &no_arcs, true);
       m_to->GetAttachmentPosition(m_attachmentTo, &other_end_x, &other_end_y, nth, no_arcs, this);
-      toX = other_end_x;
-      toY = other_end_y;
+      toX2 = other_end_x;
+      toY2 = other_end_y;
     }
 
     if (m_from->GetAttachmentMode() == ATTACHMENT_MODE_NONE)
       (void) m_from->GetPerimeterPoint(m_from->GetX(), m_from->GetY(),
-                                  toX, toY,
+                                  toX2, toY2,
                                   &end_x, &end_y);
 
     if (m_to->GetAttachmentMode() == ATTACHMENT_MODE_NONE)
       (void) m_to->GetPerimeterPoint(m_to->GetX(), m_to->GetY(),
-                                fromX, fromY,
+                                fromX2, fromY2,
                                 &other_end_x, &other_end_y);
   }
   *fromX = end_x;
@@ -1745,7 +1745,7 @@ void wxLineShape::OnSizingDragLeft(wxControlPoint* pt, bool WXUNUSED(draw), doub
     const wxPen *old_pen = lineShape->GetPen();
     const wxBrush *old_brush = lineShape->GetBrush();
 
-    wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
+    //wxPen dottedPen(*wxBLACK, 1, wxPENSTYLE_DOT);
     lineShape->SetPen(& dottedPen);
     lineShape->SetBrush(wxTRANSPARENT_BRUSH);
 
@@ -1824,7 +1824,7 @@ void wxLineShape::OnSizingEndDragLeft(wxControlPoint* pt, double x, double y, in
   {
     m_canvas->Snap(&x, &y);
 
-    wxRealPoint pt = wxRealPoint(x, y);
+    wxRealPoint mpt = wxRealPoint(x, y);
 
     // Move the control point back to where it was;
     // MoveControlPoint will move it to the new position
@@ -1834,7 +1834,7 @@ void wxLineShape::OnSizingEndDragLeft(wxControlPoint* pt, double x, double y, in
     lpt->m_xpos = lpt->m_originalPos.x; lpt->m_ypos = lpt->m_originalPos.y;
     lpt->m_point->x = lpt->m_originalPos.x; lpt->m_point->y = lpt->m_originalPos.y;
 
-    OnMoveMiddleControlPoint(dc, lpt, pt);
+    OnMoveMiddleControlPoint(dc, lpt, mpt);
   }
   if (lpt->m_type == CONTROL_POINT_ENDPOINT_FROM)
   {
